@@ -42,13 +42,15 @@ target_include_directories(stb_image PUBLIC ${STB_IMAGE_PATH})
 set(EXEC_SOURCES
 	src/Platform/Windows/WinWindow.cpp
 	src/Core/Application.cpp
+	src/Core/Window.cpp
 	src/Error/ghassert.cpp
 	src/Main.cpp
 )
 
 set(EXEC_HEADERS
-	src/Platform/Windows/WinWindow.cpp
+	src/Platform/Windows/WinWindow.h
 	src/Core/Application.h
+	src/Core/Window.h
 	src/Error/ghassert.h
 )
 
@@ -56,11 +58,11 @@ set(EXEC_HEADERS
 add_executable (${PROJECT_NAME} ${EXEC_SOURCES} ${EXEC_HEADERS})
 
 target_link_libraries(${PROJECT_NAME}
-	glad
-	glfw
-	glm::glm
-	stb_image
-	imgui
+	PUBLIC glad
+	PUBLIC glfw
+	PUBLIC glm::glm
+	PUBLIC stb_image
+	PUBLIC imgui
 )
 
 # Eventual tests

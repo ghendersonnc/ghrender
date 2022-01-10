@@ -3,6 +3,7 @@
 #include <iostream>
 
 
+
 //#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <imgui.h>
@@ -12,6 +13,8 @@
 
 void Application::run() {
 	WinWindow m_WindowHandle;
+	m_WindowHandle.Init();
+	m_WindowHandle.createWindow();
 	glfwMakeContextCurrent(m_WindowHandle.m_Window);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
