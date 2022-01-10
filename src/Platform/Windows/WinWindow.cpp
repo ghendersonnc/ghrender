@@ -2,9 +2,6 @@
 #include "../../Error/ghassert.h"
 #include <iostream>
 
-
-
-
 void WinWindow::Init()  {
 	bool success = glfwInit();
 
@@ -15,4 +12,8 @@ void WinWindow::createWindow() {
 	this->m_Window = glfwCreateWindow(properties.width, properties.height, properties.title, nullptr, nullptr);
 	glfwSetWindowPos(this->m_Window, 50, 50);
 	GH_ASSERT(this->m_Window, "Could not initialize GLFW");
+}
+
+WinWindow::~WinWindow() {
+	glfwDestroyWindow(this->m_Window);
 }

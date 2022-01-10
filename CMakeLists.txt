@@ -35,9 +35,6 @@ file(GLOB STB_IMAGE_SOURCES ${STB_IMAGE_PATH}/*.cpp)
 add_library(stb_image STATIC ${STB_IMAGE_SOURCES})
 target_include_directories(stb_image PUBLIC ${STB_IMAGE_PATH})
 
-
-# platform windows
-
 # execs
 set(EXEC_SOURCES
 	src/Platform/Windows/WinWindow.cpp
@@ -51,6 +48,10 @@ set(EXEC_HEADERS
 	src/Platform/Windows/WinWindow.h
 	src/Core/Application.h
 	src/Core/Window.h
+	src/Core/KeyCodes.h
+	src/Events/KeyboardEvents.h
+	src/Events/Event.h
+	src/Events/MouseEvents.h
 	src/Error/ghassert.h
 )
 

@@ -19,9 +19,11 @@ public:
 
 	GLFWwindow* m_Window;
 
+
 	virtual void Init() = 0;
 	virtual void createWindow() = 0;
-	virtual ~Window() = 0;
+	//virtual void setEventCallback() = 0;
+	virtual ~Window() {};
 };
 
 

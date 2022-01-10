@@ -9,9 +9,7 @@ public:
 	void Init() override;
 	void createWindow() override;
 
-	virtual ~WinWindow() {
-		glfwDestroyWindow(this->m_Window);
-	}
+	virtual ~WinWindow();
 
 };
 
