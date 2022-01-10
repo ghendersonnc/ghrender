@@ -42,12 +42,14 @@ target_include_directories(stb_image PUBLIC ${STB_IMAGE_PATH})
 set(EXEC_SOURCES
 	src/Platform/Windows/WinWindow.cpp
 	src/Core/Application.cpp
+	src/Error/ghassert.cpp
 	src/Main.cpp
 )
 
 set(EXEC_HEADERS
 	src/Platform/Windows/WinWindow.cpp
 	src/Core/Application.h
+	src/Error/ghassert.h
 )
 
 
