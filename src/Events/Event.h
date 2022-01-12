@@ -1,5 +1,4 @@
-#ifndef _GHRENDR_EVENT_H_
-#define _GHRENDR_EVENT_H_
+#pragma once
 
 #include <string>
 #include <functional>
@@ -23,25 +22,46 @@ enum class EventType {
 	Secret
 };
 
-#define SHIFT(x) (1 << x)
+#define BIT(x) (1 << x)
 enum class EventCategory {
 	None = 0,
 
-	EventCategoryApp		 = SHIFT(0),
-	EventCategoryInput		 = SHIFT(1),
-	EventCategoryKeyboard	 = SHIFT(2),
-	EventCategoryMouse		 = SHIFT(3),
-	EventCategoryMouseButton = SHIFT(4),
-	EventCategorySecret		 = SHIFT(5)
+	EventCategoryApp		 = BIT(0),
+	EventCategoryInput		 = BIT(1),
+	EventCategoryKeyboard	 = BIT(2),
+	EventCategoryMouse		 = BIT(3),
+	EventCategoryMouseButton = BIT(4),
+	EventCategorySecret		 = BIT(5)
 };
 
 class Event {
-	friend class dispatcher;
-protected:
-	bool m_Handled = false;
+	friend class Dispatcher;
 public:
-	virtual EventType getEventType() const = 0;
-	virtual int getCategory() const = 0;
+	GHbool handled = false;
+	virtual EventType getEventType() const  = 0;
+	virtual int getCategory() const			= 0;
+	// Debug purposes
+	virtual const char* getName() const		= 0;
+
+	virtual std::string ToString() const { return getName(); }
 };
 
-#endif
+#define EVENT_TYPE(t) static EventType getStaticType() { return EventType::t; } \
+	virtual EventType getEventType() const override { return getStaticType(); } \
+	virtual const char* getName() const override { return #t; };
+
+class Dispatcher {
+private:
+	Event& m_Event;
+public:
+	Dispatcher(Event& event) : m_Event(event) {}
+
+	template<typename T, typename F>
+	GHbool dispatch(const F& funct) {
+		if (m_Event.getEventType() == T::getStaticType()) {
+			m_Event.handled |= funct(static_cast<T&>(m_Event));
+			return true;
+		}
+		return false;
+	}
+};
