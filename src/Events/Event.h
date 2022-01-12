@@ -3,65 +3,74 @@
 #include <string>
 #include <functional>
 
+#define BIT(x) (1 << x)
 // Events are blocking
 
-enum class EventType {
-	None = 0,
-	// Window events
-	WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
+namespace GH {
+	enum class EventType {
+		None = 0,
+		// Window events
+		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
 
-	// App events?
-	AppUpdate, AppRender,
+		// App events?
+		AppUpdate, AppRender,
 
-	// Key events
-	KeyPress, KeyRelease,
+		// Key events
+		KeyPress, KeyRelease,
 
-	// Mouse events
-	MouseButtonPress, MouseButtonRelease, MouseMove, MouseScroll,
+		// Mouse events
+		MouseButtonPress, MouseButtonRelease, MouseMove, MouseScroll,
 
-	Secret
-};
+		Secret
+	};
 
-#define BIT(x) (1 << x)
-enum class EventCategory {
-	None = 0,
+	enum EventCategory {
+		None = 0,
 
-	EventCategoryApp		 = BIT(0),
-	EventCategoryInput		 = BIT(1),
-	EventCategoryKeyboard	 = BIT(2),
-	EventCategoryMouse		 = BIT(3),
-	EventCategoryMouseButton = BIT(4),
-	EventCategorySecret		 = BIT(5)
-};
+		EventCategoryApp = BIT(0),
+		EventCategoryInput = BIT(1),
+		EventCategoryKeyboard = BIT(2),
+		EventCategoryMouse = BIT(3),
+		EventCategoryMouseButton = BIT(4),
+		EventCategorySecret = BIT(5)
+	};
 
-class Event {
-	friend class Dispatcher;
-public:
-	GHbool handled = false;
-	virtual EventType getEventType() const  = 0;
-	virtual int getCategory() const			= 0;
-	// Debug purposes
-	virtual const char* getName() const		= 0;
+#define EVENT_TYPE(Type) static EventType getStaticType() { return EventType::Type; }\
+		virtual EventType getEventType() const override { return getStaticType(); }\
+		virtual const char* getName() const override { return #Type; }
 
-	virtual std::string ToString() const { return getName(); }
-};
+#define EVENT_CATEGORY(Cat) virtual int getCategoryFlags() const override { return Cat; }
 
-#define EVENT_TYPE(t) static EventType getStaticType() { return EventType::t; } \
-	virtual EventType getEventType() const override { return getStaticType(); } \
-	virtual const char* getName() const override { return #t; };
+	class Event {
+		friend class Dispatcher;
+	public:
+		bool handled = false;
+		virtual EventType getEventType() const = 0;
+		// Debug purposes
+		virtual const char* getName() const = 0;
 
-class Dispatcher {
-private:
-	Event& m_Event;
-public:
-	Dispatcher(Event& event) : m_Event(event) {}
+		virtual int getCategoryFlags() const = 0;
+		virtual std::string ToString() const { return getName(); }
 
-	template<typename T, typename F>
-	GHbool dispatch(const F& funct) {
-		if (m_Event.getEventType() == T::getStaticType()) {
-			m_Event.handled |= funct(static_cast<T&>(m_Event));
-			return true;
+	};
+
+	class Dispatcher {
+	private:
+		Event& m_Event;
+
+
+	public:
+		Dispatcher(Event& event) : m_Event(event) {}
+
+		template<typename T, typename F>
+		bool dispatch(const F& funct) {
+			if (m_Event.getEventType() == T::getStaticType()) {
+				m_Event.handled |= funct(static_cast<T&>(m_Event));
+				return true;
+			}
+			return false;
 		}
-		return false;
-	}
-};
+
+
+	};
+}

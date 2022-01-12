@@ -3,29 +3,38 @@
 #include <iostream>
 
 #include "../Platform/Windows/WinWindow.h"
+#include "../Events/Event.h"
+#include "../Events/KeyboardEvents.h"
+#include "../Error/ghassert.hpp"
+#include "KeyCodes.h"
 
-#include "../Error/ghassert.h"
+namespace GH {
+	void Application::run() {
+	#ifdef _WIN32
+		WinWindow m_WindowHandle;
+	#else
+		GH_ASSERT(0, "Unknown or unsupported platform");
+	#endif
+		m_WindowHandle.Init();
+		m_WindowHandle.createWindow();
+		GLFWwindow* nativeWindow = m_WindowHandle.getWindow();
+		glfwMakeContextCurrent(nativeWindow);
 
-void Application::run() {
-#ifdef _WIN32
-	WinWindow m_WindowHandle;
-#else
-	GH_ASSERT(0, "Unknown or unsupported platform");
-#endif
-	m_WindowHandle.Init();
-	m_WindowHandle.createWindow();
-	glfwMakeContextCurrent(m_WindowHandle.m_Window);
+		// TODO: Create OpenGL platform
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+			exit(EXIT_FAILURE);
+		}
+		KeyboardPressedEvent A(Key::A, 0);
 
-	// TODO: Create OpenGL platform
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-		exit(EXIT_FAILURE);
+		std::cout << A.ToString() << std::endl;
+		while (!glfwWindowShouldClose(nativeWindow)) {
+			glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glfwSwapBuffers(nativeWindow);
+			glfwPollEvents();
+		}
+
+		glfwTerminate();
 	}
 
-
-	while (!glfwWindowShouldClose(m_WindowHandle.m_Window)) {
-		glfwSwapBuffers(m_WindowHandle.m_Window);
-		glfwPollEvents();
-	}
-
-	glfwTerminate();
 }

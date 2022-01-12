@@ -52,9 +52,8 @@ set(EXEC_HEADERS
 	src/Events/KeyboardEvents.h
 	src/Events/Event.h
 	src/Events/MouseEvents.h
-	src/Error/ghassert.h
+	src/Error/ghassert.hpp
 )
-
 
 add_executable (${PROJECT_NAME} ${EXEC_SOURCES} ${EXEC_HEADERS})
 

@@ -1,4 +1,4 @@
-#include "ghassert.h"
+#include "ghassert.hpp"
 #include <iostream>
 
 using std::cerr;
