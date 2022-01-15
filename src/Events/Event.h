@@ -15,8 +15,8 @@ namespace GH {
 		// App events?
 		AppUpdate, AppRender,
 
-		// Key events
-		KeyPress, KeyRelease,
+		// Key events. KeyTyped is essentially KeyPress and KeyRelease put together; pressing and releasing the key as one event
+		KeyPress, KeyRelease, KeyTyped,
 
 		// Mouse events
 		MouseButtonPress, MouseButtonRelease, MouseMove, MouseScroll,
@@ -50,7 +50,7 @@ namespace GH {
 		virtual const char* getName() const = 0;
 
 		virtual int getCategoryFlags() const = 0;
-		virtual std::string ToString() const { return getName(); }
+		virtual std::string toString() const { return getName(); }
 
 	};
 

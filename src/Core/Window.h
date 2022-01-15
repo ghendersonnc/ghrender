@@ -19,8 +19,7 @@ namespace GH {
 		using EventCallbackFunc = std::function<void(Event&)>;
 
 		virtual void Init() = 0;
-		virtual void createWindow() = 0;
-		//virtual void setEventCallback(const EventCallbackFunc& callback) = 0;
+		virtual void setEventCallback(const EventCallbackFunc& callback) = 0;
 		virtual ~Window() {};
 	};
 }

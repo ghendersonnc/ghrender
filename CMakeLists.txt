@@ -22,8 +22,8 @@ add_subdirectory(external/glfw)
 
 # GLAD
 set(GLAD_PATH include/glad)
-file(GLOB GLAD_SOURCES ${GLAD_PATH}/*.c)
-add_library(glad STATIC ${GLAD_SOURCES})
+#file(GLOB GLAD_SOURCES ${GLAD_PATH}/*.c)
+add_library(glad STATIC ${GLAD_PATH}/glad.c)
 target_include_directories(glad PUBLIC ${GLAD_PATH})
 
 # glm
@@ -37,7 +37,7 @@ target_include_directories(stb_image PUBLIC ${STB_IMAGE_PATH})
 
 # execs
 set(EXEC_SOURCES
-	src/Platform/Windows/WinWindow.cpp
+	src/Platform/Windows/Win32Window.cpp
 	src/Core/Application.cpp
 	src/Core/Window.cpp
 	src/Error/ghassert.cpp
@@ -45,7 +45,7 @@ set(EXEC_SOURCES
 )
 
 set(EXEC_HEADERS
-	src/Platform/Windows/WinWindow.h
+	src/Platform/Windows/Win32Window.h
 	src/Core/Application.h
 	src/Core/Window.h
 	src/Core/KeyCodes.h
