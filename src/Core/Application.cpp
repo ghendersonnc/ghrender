@@ -2,40 +2,32 @@
 
 #include <iostream>
 
-#include "../Platform/Windows/Win32Window.h"
-#include "../Events/Event.h"
-#include "../Events/KeyboardEvents.h"
 #include "KeyCodes.h"
 #include "../Error/ghassert.hpp"
-#include "KeyCodes.h"
+#include "Input.h"
 
 namespace GH {
-	void onEvent(Event& e);
-	bool onKeyPressed(KeyboardPressedEvent& e);
-	bool onKeyReleased(KeyboardReleasedEvent& e);
+	Application* Application::instance = nullptr;
+	Application::Application() {
+		
+		GH_ASSERT(!instance, "Application exists.");
+		instance = this;
+		this->m_Window = Window::create(WindowProperties());
+		m_Window->setEventCallback(BIND_EVENT(Application::onEvent));
+	}
+
 	void Application::run() {
-	#ifdef _WIN32
-		WinWindow m_WindowHandle;
-	#else
-		GH_ASSERT(0, "Unknown or unsupported platform");
-	#endif
-		m_WindowHandle.Init();
+		GLFWwindow* window = static_cast<GLFWwindow*>(Application::get().getWindow().getContextWindow());
+		glfwMakeContextCurrent(window);
 
-
-		m_WindowHandle.setEventCallback(onEvent);
-
-		GLFWwindow* nativeWindow = m_WindowHandle.getWindow();
-		glfwMakeContextCurrent(nativeWindow);
-
-		// TODO: Create OpenGL platform
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			exit(EXIT_FAILURE);
 		}
-		
-		while (!glfwWindowShouldClose(nativeWindow)) {
+
+		while (!glfwWindowShouldClose(window)) {
 			glClearColor(0.43f, 0.03f, 0.76f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
-			glfwSwapBuffers(nativeWindow);
+			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}
 
@@ -43,27 +35,28 @@ namespace GH {
 	}
 
 	// Likely only in Application.cpp temporarily
-	void onEvent(Event& e) {
+	void Application::onEvent(Event& e) {
 		Dispatcher dispatcher(e);
 
-		dispatcher.dispatch<KeyboardPressedEvent>(onKeyPressed);
-		dispatcher.dispatch<KeyboardReleasedEvent>(onKeyReleased);
+		dispatcher.dispatch<KeyboardPressedEvent>(BIND_EVENT(Application::onKeyPressed));
+		dispatcher.dispatch<KeyboardReleasedEvent>(BIND_EVENT(Application::onKeyReleased));
 	}
+	
+	bool Application::onKeyPressed(KeyboardPressedEvent& e) {
+		
+		
+		bool isControl = Input::isKeyPress(Key::LeftControl);
 
-	bool onKeyPressed(KeyboardPressedEvent& e) {
-		KeyCode code = e.getKeyCode();
-
-		switch (code) {
-		case Key::Escape:
-			glfwTerminate();
-			exit(EXIT_SUCCESS);
+		switch (e.getKeyCode()) {
+		case Key::Q:
+			if (isControl) exit(EXIT_SUCCESS);
 			break;
 		}
-		
+
 		return true;
 	}
 
-	bool onKeyReleased(KeyboardReleasedEvent& e) {
+	bool Application::onKeyReleased(KeyboardReleasedEvent& e) {
 		
 		return true;
 	}

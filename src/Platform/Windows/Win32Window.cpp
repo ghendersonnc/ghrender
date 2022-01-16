@@ -3,9 +3,16 @@
 #include "Win32Window.h"
 #include "../../Error/ghassert.hpp"
 #include "../../Events/KeyboardEvents.h"
-
+#include "../../Core/Input.h"
 namespace GH {
-	void WinWindow::Init()  {
+
+
+
+	Win32Window::Win32Window(const WindowProperties& properties) {
+		Init(properties);
+	}
+
+	void Win32Window::Init(const WindowProperties& properties)  {
 		bool success = glfwInit();
 
 		GH_ASSERT(success, "Could not initialize GLFW");
@@ -40,7 +47,12 @@ namespace GH {
 
 	}
 
-	WinWindow::~WinWindow() {
+	bool Win32Window::isKeyPressed(const KeyCode key) {
+		auto state = glfwGetKey(this->m_Window, static_cast<int32_t>(key));
+		return state == GLFW_PRESS || state == GLFW_REPEAT;
+	}
+
+	Win32Window::~Win32Window() {
 		glfwDestroyWindow(this->m_Window);
 	}
 

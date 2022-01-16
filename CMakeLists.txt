@@ -37,22 +37,25 @@ target_include_directories(stb_image PUBLIC ${STB_IMAGE_PATH})
 
 # execs
 set(EXEC_SOURCES
-	src/Platform/Windows/Win32Window.cpp
-	src/Core/Application.cpp
-	src/Core/Window.cpp
-	src/Error/ghassert.cpp
-	src/Main.cpp
+	"src/Platform/Windows/Win32Input.cpp"
+	"src/Platform/Windows/Win32Window.cpp"
+	"src/Core/Application.cpp"
+	"src/Core/Window.cpp"
+	"src/Error/ghassert.cpp"
+	"src/Main.cpp"
 )
 
 set(EXEC_HEADERS
-	src/Platform/Windows/Win32Window.h
-	src/Core/Application.h
-	src/Core/Window.h
-	src/Core/KeyCodes.h
-	src/Events/KeyboardEvents.h
-	src/Events/Event.h
-	src/Events/MouseEvents.h
-	src/Error/ghassert.hpp
+	"src/Platform/Windows/Win32Window.h"
+	"src/Core/Core.h"
+	"src/Core/Application.h"
+	"src/Core/Window.h"
+	"src/Core/KeyCodes.h"
+	"src/Core/Input.h"
+	"src/Events/KeyboardEvents.h"
+	"src/Events/Event.h"
+	"src/Events/MouseEvents.h"
+	"src/Error/ghassert.hpp"
 )
 
 add_executable (${PROJECT_NAME} ${EXEC_SOURCES} ${EXEC_HEADERS})
