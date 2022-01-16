@@ -44,7 +44,6 @@ namespace GH {
 	
 	bool Application::onKeyPressed(KeyboardPressedEvent& e) {
 		
-		
 		bool isControl = Input::isKeyPress(Key::LeftControl);
 
 		switch (e.getKeyCode()) {
@@ -61,4 +60,3 @@ namespace GH {
 		return true;
 	}
 }
-

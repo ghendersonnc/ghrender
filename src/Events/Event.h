@@ -58,7 +58,6 @@ namespace GH {
 	private:
 		Event& m_Event;
 
-
 	public:
 		Dispatcher(Event& event) : m_Event(event) {}
 
@@ -70,7 +69,6 @@ namespace GH {
 			}
 			return false;
 		}
-
 
 	};
 }

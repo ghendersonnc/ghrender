@@ -26,5 +26,3 @@ namespace GH {
 		static Application& get() { return *instance; }
 	};
 }
-
-

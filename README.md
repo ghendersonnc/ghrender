@@ -1,4 +1,4 @@
-# ghrendr
+# ghrender
 
 fun home project
 
@@ -9,8 +9,8 @@ fun home project
 * (windows) will work on powershell, git-bash
 
 ```
-$ git clone --recursive https://github.com/ghendersonnc/ghrendr.git
-$ cd ghrendr
+$ git clone --recursive https://github.com/ghendersonnc/ghrender.git
+$ cd ghrender
 $ mkdir build && cd build
 $ cmake ..
 $ cmake --build .

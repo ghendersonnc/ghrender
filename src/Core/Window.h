@@ -20,4 +20,3 @@ namespace GH {
 		virtual ~Window() {};
 	};
 }
-

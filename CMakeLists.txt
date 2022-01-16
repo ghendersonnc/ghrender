@@ -2,7 +2,7 @@
 # project specific logic here.
 #
 cmake_minimum_required (VERSION 3.8)
-set(PROJECT_NAME "ghrendr")
+set(PROJECT_NAME "ghrender")
 project(${PROJECT_NAME})
 
 
