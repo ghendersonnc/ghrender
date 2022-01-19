@@ -51,6 +51,7 @@ set(EXEC_HEADERS
 	"src/Core/Application.h"
 	"src/Core/Window.h"
 	"src/Core/KeyCodes.h"
+	"src/Core/MouseCodes.h"
 	"src/Core/Input.h"
 	"src/Events/KeyboardEvents.h"
 	"src/Events/Event.h"

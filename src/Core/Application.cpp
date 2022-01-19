@@ -7,12 +7,12 @@
 #include "Input.h"
 
 namespace GH {
-	Application* Application::instance = nullptr;
+	Application* Application::s_Instance = nullptr;
 	Application::Application() {
 		
-		GH_ASSERT(!instance, "Application exists.");
-		instance = this;
-		this->m_Window = Window::create(WindowProperties());
+		GH_ASSERT(!s_Instance, "Application exists.");
+		s_Instance = this;
+		m_Window = Window::create(WindowProperties());
 		m_Window->setEventCallback(BIND_EVENT(Application::onEvent));
 	}
 
@@ -34,12 +34,15 @@ namespace GH {
 		glfwTerminate();
 	}
 
-	// Likely only in Application.cpp temporarily
+	// Below functions are likely only in Application.cpp temporarily
+	// I plan on them being per "widget"
 	void Application::onEvent(Event& e) {
 		Dispatcher dispatcher(e);
 
 		dispatcher.dispatch<KeyboardPressedEvent>(BIND_EVENT(Application::onKeyPressed));
 		dispatcher.dispatch<KeyboardReleasedEvent>(BIND_EVENT(Application::onKeyReleased));
+		dispatcher.dispatch<MouseButtonPressedEvent>(BIND_EVENT(Application::onMousePressed));
+		dispatcher.dispatch<MouseButtonReleasedEvent>(BIND_EVENT(Application::onMouseReleased));
 	}
 	
 	bool Application::onKeyPressed(KeyboardPressedEvent& e) {
@@ -57,6 +60,15 @@ namespace GH {
 
 	bool Application::onKeyReleased(KeyboardReleasedEvent& e) {
 		
+		return true;
+	}
+
+	bool Application::onMousePressed(MouseButtonPressedEvent& e) {
+
+		return true;
+	}
+
+	bool Application::onMouseReleased(MouseButtonReleasedEvent& e) {
 		return true;
 	}
 }

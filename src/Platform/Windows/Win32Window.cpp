@@ -3,6 +3,7 @@
 #include "Win32Window.h"
 #include "../../Error/ghassert.hpp"
 #include "../../Events/KeyboardEvents.h"
+#include "../../Events/MouseEvents.h"
 #include "../../Core/Input.h"
 namespace GH {
 
@@ -17,17 +18,17 @@ namespace GH {
 
 		GH_ASSERT(success, "Could not initialize GLFW");
 
-		this->m_Data.height = properties.height;
-		this->m_Data.height = properties.width;
-		this->m_Data.title = properties.title;
-		this->m_Window = glfwCreateWindow(properties.width, properties.height, properties.title, nullptr, nullptr);
-		glfwSetWindowPos(this->m_Window, 50, 50);
-		GH_ASSERT(this->m_Window, "Could not initialize GLFW");
+		m_Data.height = properties.height;
+		m_Data.height = properties.width;
+		m_Data.title = properties.title;
+		m_Window = glfwCreateWindow(properties.width, properties.height, properties.title, nullptr, nullptr);
+		glfwSetWindowPos(m_Window, 50, 50);
+		GH_ASSERT(m_Window, "Could not initialize GLFW");
 
-		glfwSetWindowUserPointer(m_Window, &this->m_Data);
+		glfwSetWindowUserPointer(m_Window, &m_Data);
 
 		// glfw callbacks
-		glfwSetKeyCallback(this->m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
 			if (action == GLFW_PRESS) {
@@ -45,15 +46,27 @@ namespace GH {
 
 		});
 
+		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			if (action == GLFW_PRESS) {
+				MouseButtonPressedEvent event(button);
+				data.eventCallback(event);
+			}
+			else if (action == GLFW_RELEASE) {
+				MouseButtonReleasedEvent event(button);
+				data.eventCallback(event);
+			}
+		});
 	}
 
 	bool Win32Window::isKeyPressed(const KeyCode key) {
-		auto state = glfwGetKey(this->m_Window, static_cast<int32_t>(key));
+		auto state = glfwGetKey(m_Window, static_cast<int32_t>(key));
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
 	Win32Window::~Win32Window() {
-		glfwDestroyWindow(this->m_Window);
+		glfwDestroyWindow(m_Window);
 	}
 
 }

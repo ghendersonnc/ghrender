@@ -9,7 +9,7 @@ namespace GH {
 	// Abstract keyboard "event" class
 	class KeyboardEvent : public Event {
 	public:
-		inline int getKeyCode() const { return m_KeyCode; }
+		KeyCode getKeyCode() const { return m_KeyCode; }
 
 		EVENT_CATEGORY(EventCategoryKeyboard | EventCategoryInput);
 	protected:
@@ -33,7 +33,7 @@ namespace GH {
 		// Debugging
 		std::string toString() const override {
 			std::stringstream ss;
-			ss << "KeyboardPressedEvent: " << this->m_KeyCode << " (" << this->m_RepeatCount << " repeats)";
+			ss << "KeyboardPressedEvent: " << m_KeyCode << " (" << m_RepeatCount << " repeats)";
 			return ss.str();
 		}
 
@@ -48,7 +48,7 @@ namespace GH {
 		// Debugging
 		std::string toString() const override {
 			std::stringstream ss;
-			ss << "KeyboardReleasedEvent: " << this->m_KeyCode;
+			ss << "KeyboardReleasedEvent: " << m_KeyCode;
 			return ss.str();
 		}
 	};
@@ -62,7 +62,7 @@ namespace GH {
 		// Debugging
 		std::string toString() const override {
 			std::stringstream ss;
-			ss << "KeyboardTypedEvent: " << this->m_KeyCode;
+			ss << "KeyboardTypedEvent: " << m_KeyCode;
 			return ss.str();
 		}
 	};

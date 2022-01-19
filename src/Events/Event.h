@@ -19,7 +19,7 @@ namespace GH {
 		KeyPress, KeyRelease, KeyTyped,
 
 		// Mouse events
-		MouseButtonPress, MouseButtonRelease, MouseMove, MouseScroll,
+		MouseButtonPressed, MouseButtonRelease, MouseMove, MouseScroll,
 
 		Secret
 	};
