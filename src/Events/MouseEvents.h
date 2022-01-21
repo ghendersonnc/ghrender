@@ -3,9 +3,30 @@
 #include "Event.h"
 #include "../Core/MouseCodes.h"
 
-#include <sstream>
-
 namespace GH {
+
+	class MouseMovedEvent : public Event {
+	public:
+		MouseMovedEvent(const float x, const float y) : m_MouseXPos(x), m_MouseYPos(y) {}
+
+		float getXPos() const { return m_MouseXPos; }
+		float getYPos() const { return m_MouseYPos; }
+
+		EVENT_TYPE(MouseMove);
+		EVENT_CATEGORY(EventCategoryMouse | EventCategoryInput);
+
+		// Debugging
+		std::string toString() const override {
+			std::stringstream ss;
+			ss << "MouseMovedEvent: " << m_MouseXPos << ", " << m_MouseYPos;
+			return ss.str();
+		}
+
+	private:
+		float m_MouseXPos;
+		float m_MouseYPos;
+	};
+
 	class MouseButtonEvent : public Event {
 	public:
 		MouseCode getMouseCode() const { return m_MouseCode; }
@@ -21,6 +42,7 @@ namespace GH {
 	public:
 		MouseButtonPressedEvent(const MouseCode mouseCode) : MouseButtonEvent(mouseCode) {}
 
+		// Debugging
 		std::string toString() const override {
 			std::stringstream ss;
 			ss << "MousePressedEvent: " << m_MouseCode;

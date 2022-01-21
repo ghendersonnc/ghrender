@@ -3,8 +3,6 @@
 #include "Event.h"
 #include "../Core/KeyCodes.h"
 
-#include <sstream>
-
 namespace GH {
 	// Abstract keyboard "event" class
 	class KeyboardEvent : public Event {

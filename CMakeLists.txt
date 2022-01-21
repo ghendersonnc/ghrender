@@ -22,7 +22,6 @@ add_subdirectory(external/glfw)
 
 # GLAD
 set(GLAD_PATH include/glad)
-#file(GLOB GLAD_SOURCES ${GLAD_PATH}/*.c)
 add_library(glad STATIC ${GLAD_PATH}/glad.c)
 target_include_directories(glad PUBLIC ${GLAD_PATH})
 

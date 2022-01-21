@@ -21,6 +21,7 @@ namespace GH {
 		bool onKeyReleased(KeyboardReleasedEvent& e);
 		bool onMousePressed(MouseButtonPressedEvent& e);
 		bool onMouseReleased(MouseButtonReleasedEvent& e);
+		bool onMouseMoved(MouseMovedEvent& e);
 		Window& getWindow() { return *m_Window; }
 
 		void run();

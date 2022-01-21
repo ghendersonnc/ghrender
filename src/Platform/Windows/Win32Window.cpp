@@ -7,8 +7,6 @@
 #include "../../Core/Input.h"
 namespace GH {
 
-
-
 	Win32Window::Win32Window(const WindowProperties& properties) {
 		Init(properties);
 	}
@@ -57,6 +55,14 @@ namespace GH {
 				MouseButtonReleasedEvent event(button);
 				data.eventCallback(event);
 			}
+		});
+
+		glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xpos, double ypos){
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			MouseMovedEvent event((float)xpos, (float)ypos);
+			data.eventCallback(event);
+
 		});
 	}
 

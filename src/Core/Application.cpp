@@ -9,7 +9,7 @@
 namespace GH {
 	Application* Application::s_Instance = nullptr;
 	Application::Application() {
-		
+
 		GH_ASSERT(!s_Instance, "Application exists.");
 		s_Instance = this;
 		m_Window = Window::create(WindowProperties());
@@ -17,6 +17,9 @@ namespace GH {
 	}
 
 	void Application::run() {
+
+		// TODO: Modularize OpenGL and GLFW updates
+
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::get().getWindow().getContextWindow());
 		glfwMakeContextCurrent(window);
 
@@ -43,10 +46,11 @@ namespace GH {
 		dispatcher.dispatch<KeyboardReleasedEvent>(BIND_EVENT(Application::onKeyReleased));
 		dispatcher.dispatch<MouseButtonPressedEvent>(BIND_EVENT(Application::onMousePressed));
 		dispatcher.dispatch<MouseButtonReleasedEvent>(BIND_EVENT(Application::onMouseReleased));
+		dispatcher.dispatch<MouseMovedEvent>(BIND_EVENT(Application::onMouseMoved));
 	}
-	
+
 	bool Application::onKeyPressed(KeyboardPressedEvent& e) {
-		
+
 		bool isControl = Input::isKeyPress(Key::LeftControl);
 
 		switch (e.getKeyCode()) {
@@ -59,7 +63,7 @@ namespace GH {
 	}
 
 	bool Application::onKeyReleased(KeyboardReleasedEvent& e) {
-		
+
 		return true;
 	}
 
@@ -69,6 +73,13 @@ namespace GH {
 	}
 
 	bool Application::onMouseReleased(MouseButtonReleasedEvent& e) {
+		return true;
+	}
+
+	bool Application::onMouseMoved(MouseMovedEvent& e) {
+
+		std::cout << e.toString() << std::endl;
+
 		return true;
 	}
 }
