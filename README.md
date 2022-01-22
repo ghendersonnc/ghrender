@@ -1,6 +1,28 @@
 # ghrender
 
-fun home project
+fun home project  
+Main purpose is just going to be able to import 3D models and simply view them.  
+The reason I am writing an unnecessary API for this is so that I have some experience in doing so.
+
+## Todo
+
+1. ~~Keyboard events~~
+2. ~~Mouse events~~
+3. Window events
+    * Resize
+    * Focus
+    * Position
+4. ImGui
+    * Events
+5. Finally OpenGL (Possibly more ImGui changes)
+    * Assimp
+
+## Some things I wanna do in the future (tentative)
+
+* Able to add lights
+    * Materials
+* Able to add primitives (quads, cubes, etc)
+    * Materials
 
 ## build
 
