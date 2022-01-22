@@ -24,6 +24,7 @@ namespace GH {
 		virtual void Init(const WindowProperties& properties);
 		void setEventCallback(const EventCallbackFunc& callback) override { this->m_Data.eventCallback = callback; };
 		bool isKeyPressed(const KeyCode key);
+		void update();
 		virtual void* getContextWindow() { return m_Window; };
 
 		virtual ~Win32Window();

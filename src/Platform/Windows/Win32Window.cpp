@@ -4,8 +4,13 @@
 #include "../../Error/ghassert.hpp"
 #include "../../Events/KeyboardEvents.h"
 #include "../../Events/MouseEvents.h"
+#include "../../Events/WindowEvents.h"
 #include "../../Core/Input.h"
 namespace GH {
+	bool Win32Window::isKeyPressed(const KeyCode key) {
+		auto state = glfwGetKey(m_Window, static_cast<int32_t>(key));
+		return state == GLFW_PRESS || state == GLFW_REPEAT;
+	}
 
 	Win32Window::Win32Window(const WindowProperties& properties) {
 		Init(properties);
@@ -21,7 +26,7 @@ namespace GH {
 		m_Data.title = properties.title;
 		m_Window = glfwCreateWindow(properties.width, properties.height, properties.title, nullptr, nullptr);
 		glfwSetWindowPos(m_Window, 50, 50);
-		GH_ASSERT(m_Window, "Could not initialize GLFW");
+		GH_ASSERT(m_Window, "Could not initialize GLFW Window context");
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 
@@ -64,11 +69,21 @@ namespace GH {
 			data.eventCallback(event);
 
 		});
+
+		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			WindowClosedEvent event;
+			data.eventCallback(event);
+		});
+
 	}
 
-	bool Win32Window::isKeyPressed(const KeyCode key) {
-		auto state = glfwGetKey(m_Window, static_cast<int32_t>(key));
-		return state == GLFW_PRESS || state == GLFW_REPEAT;
+	void Win32Window::update() {
+		glfwPollEvents();
+
+		// Currently temporary and will be relevant to the opengl context.
+		glfwSwapBuffers(m_Window);
 	}
 
 	Win32Window::~Win32Window() {

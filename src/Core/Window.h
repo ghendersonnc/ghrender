@@ -15,6 +15,7 @@ namespace GH {
 		using EventCallbackFunc = std::function<void(Event&)>;
 
 		virtual void setEventCallback(const EventCallbackFunc& callback) = 0;
+		virtual void update() = 0;
 		virtual void* getContextWindow() = 0;
 		static Scope<Window> create(const WindowProperties& properties = WindowProperties());
 		virtual ~Window() {};
