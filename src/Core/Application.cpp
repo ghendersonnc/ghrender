@@ -24,11 +24,18 @@ namespace GH {
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::get().getWindow().getContextWindow());
 		glfwMakeContextCurrent(window);
 
-
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			exit(EXIT_FAILURE);
 		}
 
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+
+		ImGuiIO& io = ImGui::GetIO();
+		(void)io;
+		ImGui::StyleColorsDark();
+		ImGui_ImplGlfw_InitForOpenGL(window, true);
+		ImGui_ImplOpenGL3_Init("#version 330");
 
 		while (m_Running) {
 			glClearColor(0.43f, 0.03f, 0.76f, 1.0f);

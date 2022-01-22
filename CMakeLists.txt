@@ -1,24 +1,33 @@
 ﻿# CMakeList.txt : CMake project for ghrendr, include source and define
 # project specific logic here.
 #
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.12)
 set(PROJECT_NAME "ghrender")
 project(${PROJECT_NAME})
 
 
 include_directories(include)
 
-# imgui
-set(IMGUI_PATH external/imgui)
-file(GLOB IMGUI_SOURCES ${IMGUI_PATH}/*.cpp)
-add_library(imgui STATIC ${IMGUI_SOURCES})
-target_include_directories(imgui PUBLIC ${IMGUI_PATH})
+
 
 # GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(external/glfw)
+# imgui
+# set(IMGUI_PATH external/imgui)
+# file(GLOB IMGUI_SOURCES ${IMGUI_PATH}/*.cpp ${IMGUI_PATH}/backends/*.cpp)
+# add_library(imgui STATIC ${IMGUI_SOURCES})
+# target_include_directories(imgui PUBLIC ${IMGUI_PATH} ${IMGUI_PATH}/backends)
+
+
+# imgui
+
+set(IMGUI_PATH include/imgui)
+file(GLOB IMGUI_SRC CONFIGURE_DEPENDS ${IMGUI_PATH}/*.h ${IMGUI_PATH}/*.cpp)
+#add_library(imgui STATIC ${IMGUI_SRC})
+#target_include_directories(imgui PUBLIC ${IMGUI_PATH})
 
 # GLAD
 set(GLAD_PATH include/glad)
@@ -42,6 +51,7 @@ set(EXEC_SOURCES
 	"src/Core/Window.cpp"
 	"src/Error/ghassert.cpp"
 	"src/Main.cpp"
+	${IMGUI_SRC}
 )
 
 set(EXEC_HEADERS
@@ -56,16 +66,17 @@ set(EXEC_HEADERS
 	"src/Events/Event.h"
 	"src/Events/MouseEvents.h"
 	"src/Error/ghassert.hpp"
+
 )
 
 add_executable (${PROJECT_NAME} ${EXEC_SOURCES} ${EXEC_HEADERS})
 
 target_link_libraries(${PROJECT_NAME}
-	PUBLIC glad
 	PUBLIC glfw
+	PUBLIC glad
+	PUBLIC imgui
 	PUBLIC glm::glm
 	PUBLIC stb_image
-	PUBLIC imgui
 )
 
 # Eventual tests
