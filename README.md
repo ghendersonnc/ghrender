@@ -4,7 +4,9 @@ fun home project
 Main purpose is just going to be able to import 3D models and simply view them.  
 The reason I am writing an unnecessary API for this is so that I have some experience in doing so.
 
-### [Working on imgui integration](https://github.com/ghendersonnc/ghrender/tree/imgui_1)
+### Currently reevaluating requirements and planning OpenGL
+decided imgui is best to integrate AFTER I push in OpenGL  
+refer to [this branch](https://github.com/ghendersonnc/ghrender/tree/opengl3_1.0) for latest commits involving OpenGL (and a cool imgui message box)
 
 ## Todo
 
