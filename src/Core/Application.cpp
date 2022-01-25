@@ -32,7 +32,7 @@ namespace GH {
 
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
-
+		
 		ImGuiIO& io = ImGui::GetIO();
 		(void)io;
 		ImGui::StyleColorsDark();
@@ -97,9 +97,11 @@ namespace GH {
 
 		switch (e.getKeyCode()) {
 		case Key::Q:
-			WindowClosedEvent close;
-			Dispatcher d(close);
-			d.dispatch<WindowClosedEvent>(BIND_EVENT(Application::onWindowClosed));
+			if (isControl) {
+				WindowClosedEvent close;
+				Dispatcher d(close);
+				d.dispatch<WindowClosedEvent>(BIND_EVENT(Application::onWindowClosed));
+			}
 			break;
 		}
 
