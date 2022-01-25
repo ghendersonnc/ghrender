@@ -4,6 +4,8 @@
 
 #include "KeyCodes.h"
 #include "../Error/ghassert.hpp"
+
+#include <glm/glm.hpp>
 #include "Input.h"
 
 
@@ -36,16 +38,40 @@ namespace GH {
 		ImGui::StyleColorsDark();
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 330");
+		
+		bool coolStuff = false;
 
 		while (m_Running) {
 			glClearColor(0.43f, 0.03f, 0.76f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			// basic ImGui stuff
+			{
+				ImGui_ImplOpenGL3_NewFrame();
+				ImGui_ImplGlfw_NewFrame();
+				ImGui::NewFrame();
+				ImGui::SetNextWindowSize(ImVec2(400.0f, 100.0f));
+				ImGui::SetNextWindowPos(ImVec2(600.0f, 400.0f));
+				ImGui::Begin("hi");
+				ImGui::Text("For whatever reason you cloned and built this.\nHere is a quit button");
+				if (ImGui::Button("Quit")) {
+					WindowClosedEvent close;
+					Dispatcher d(close);
+					d.dispatch<WindowClosedEvent>(BIND_EVENT(Application::onWindowClosed));
+				}
+				ImGui::End();
 			
+				ImGui::Render();
+				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+			}
 
 			m_Window->update();
 		}
 		
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
+
 	}
 
 	// Below functions are likely only in Application.cpp temporarily and will be per context
@@ -54,9 +80,6 @@ namespace GH {
 
 		dispatcher.dispatch<KeyboardPressedEvent>(BIND_EVENT(Application::onKeyPressed));
 		dispatcher.dispatch<KeyboardReleasedEvent>(BIND_EVENT(Application::onKeyReleased));
-		dispatcher.dispatch<MouseButtonPressedEvent>(BIND_EVENT(Application::onMousePressed));
-		dispatcher.dispatch<MouseButtonReleasedEvent>(BIND_EVENT(Application::onMouseReleased));
-		dispatcher.dispatch<MouseMovedEvent>(BIND_EVENT(Application::onMouseMoved));
 		dispatcher.dispatch<WindowClosedEvent>(BIND_EVENT(Application::onWindowClosed));
 	}
 
@@ -88,19 +111,4 @@ namespace GH {
 		return true;
 	}
 
-	bool Application::onMousePressed(MouseButtonPressedEvent& e) {
-
-		return true;
-	}
-
-	bool Application::onMouseReleased(MouseButtonReleasedEvent& e) {
-		return true;
-	}
-
-	bool Application::onMouseMoved(MouseMovedEvent& e) {
-
-		std::cout << e.toString() << std::endl;
-
-		return true;
-	}
 }
