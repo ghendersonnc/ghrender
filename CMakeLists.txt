@@ -8,12 +8,6 @@ project(${PROJECT_NAME})
 
 include_directories(include)
 
-# imgui
-set(IMGUI_PATH external/imgui)
-file(GLOB IMGUI_SOURCES ${IMGUI_PATH}/*.cpp)
-add_library(imgui STATIC ${IMGUI_SOURCES})
-target_include_directories(imgui PUBLIC ${IMGUI_PATH})
-
 # GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
