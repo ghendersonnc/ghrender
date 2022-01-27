@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include "Input.h"
 
+
 namespace GH {
 	Application* Application::s_Instance = nullptr;
 	Application::Application() { GH_ASSERT(!s_Instance, "Application exists.");
@@ -42,14 +43,21 @@ namespace GH {
 			glClearColor(0.43f, 0.03f, 0.76f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+
+			glBegin(GL_TRIANGLES);
+			glVertex2f(-0.5f, -0.5f);
+			glVertex2f(0.0f, 0.5f);
+			glVertex2f(0.5f, -0.5f);
+			glEnd();
+
 			// basic ImGui stuff
 			{
 				ImGui_ImplOpenGL3_NewFrame();
 				ImGui_ImplGlfw_NewFrame();
 				ImGui::NewFrame();
-				ImGui::SetNextWindowSize(ImVec2(400.0f, 100.0f));
-				ImGui::SetNextWindowPos(ImVec2(600.0f, 400.0f));
-				ImGui::Begin("hi", 0, ImGuiWindowFlags_NoResize);
+				ImGui::SetNextWindowSize(ImVec2(350.0f, 900.0f));
+				ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+				ImGui::Begin("Sidepanel", 0, ImGuiWindowFlags_NoResize);
 				ImGui::Text("For whatever reason you cloned and built this.\nHere is a quit button (Ctrl+W)");
 				if (ImGui::Button("Quit")) {
 					WindowClosedEvent close;
