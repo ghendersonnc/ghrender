@@ -10,7 +10,7 @@ namespace GH {
 #ifdef _WIN32
 		return CreateScope<Win32Window>(properties);
 #else
-		GH_ASSERT(0, "bruh???");
+		GH_ASSERT(0, "Unrecognized platform");
 		return nullptr;
 #endif
 	}

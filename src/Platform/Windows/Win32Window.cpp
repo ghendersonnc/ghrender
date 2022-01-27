@@ -22,7 +22,7 @@ namespace GH {
 		GH_ASSERT(success, "Could not initialize GLFW");
 
 		m_Data.height = properties.height;
-		m_Data.height = properties.width;
+		m_Data.width = properties.width;
 		m_Data.title = properties.title;
 		m_Window = glfwCreateWindow(properties.width, properties.height, properties.title, nullptr, nullptr);
 		glfwSetWindowPos(m_Window, 50, 50);

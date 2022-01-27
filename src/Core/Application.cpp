@@ -8,8 +8,6 @@
 #include <glm/glm.hpp>
 #include "Input.h"
 
-
-
 namespace GH {
 	Application* Application::s_Instance = nullptr;
 	Application::Application() { GH_ASSERT(!s_Instance, "Application exists.");
@@ -18,10 +16,10 @@ namespace GH {
 		m_Window->setEventCallback(BIND_EVENT(Application::onEvent));
 	}
 
-	// TODO: Maybe "sandbox" this 
+	// TODO: Maybe sandbox this 
 	void Application::run() {
 		m_Running = true;
-		// TODO: Modularize OpenGL and GLFW updates
+		// TODO: Modularize OpenGL
 
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::get().getWindow().getContextWindow());
 		glfwMakeContextCurrent(window);
@@ -30,6 +28,7 @@ namespace GH {
 			exit(EXIT_FAILURE);
 		}
 
+		// Temporary imgui
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		
@@ -39,8 +38,6 @@ namespace GH {
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 330");
 		
-		bool coolStuff = false;
-
 		while (m_Running) {
 			glClearColor(0.43f, 0.03f, 0.76f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
@@ -52,15 +49,14 @@ namespace GH {
 				ImGui::NewFrame();
 				ImGui::SetNextWindowSize(ImVec2(400.0f, 100.0f));
 				ImGui::SetNextWindowPos(ImVec2(600.0f, 400.0f));
-				ImGui::Begin("hi");
-				ImGui::Text("For whatever reason you cloned and built this.\nHere is a quit button");
+				ImGui::Begin("hi", 0, ImGuiWindowFlags_NoResize);
+				ImGui::Text("For whatever reason you cloned and built this.\nHere is a quit button (Ctrl+W)");
 				if (ImGui::Button("Quit")) {
 					WindowClosedEvent close;
 					Dispatcher d(close);
 					d.dispatch<WindowClosedEvent>(BIND_EVENT(Application::onWindowClosed));
 				}
 				ImGui::End();
-			
 				ImGui::Render();
 				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 			}
@@ -74,7 +70,6 @@ namespace GH {
 
 	}
 
-	// Below functions are likely only in Application.cpp temporarily and will be per context
 	void Application::onEvent(Event& e) {
 		Dispatcher dispatcher(e);
 
@@ -85,6 +80,9 @@ namespace GH {
 
 	bool Application::onWindowClosed(WindowClosedEvent& e) {
 		m_Running = false;
+
+		// I am aware that if another GLFW window was opened, then closing it will cause a crash due to glfwTerminate()
+		// But it won't because the main window will be the only window for the foreseeable future haha
 		std::cout << "bye" << std::endl;
 		glfwTerminate();
 
@@ -96,7 +94,7 @@ namespace GH {
 		bool isControl = Input::isKeyPress(Key::LeftControl);
 
 		switch (e.getKeyCode()) {
-		case Key::Q:
+		case Key::W:
 			if (isControl) {
 				WindowClosedEvent close;
 				Dispatcher d(close);
