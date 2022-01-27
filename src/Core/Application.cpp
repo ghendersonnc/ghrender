@@ -24,7 +24,6 @@ namespace GH {
 
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::get().getWindow().getContextWindow());
 		glfwMakeContextCurrent(window);
-
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			exit(EXIT_FAILURE);
 		}
@@ -33,22 +32,16 @@ namespace GH {
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		
-		ImGuiIO& io = ImGui::GetIO();
-		(void)io;
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+
 		ImGui::StyleColorsDark();
+
+		ImGuiStyle& style = ImGui::GetStyle();
+
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 330");
-		
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		while (m_Running) {
-			glClearColor(0.43f, 0.03f, 0.76f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
-
-
-			glBegin(GL_TRIANGLES);
-			glVertex2f(-0.5f, -0.5f);
-			glVertex2f(0.0f, 0.5f);
-			glVertex2f(0.5f, -0.5f);
-			glEnd();
 
 			// basic ImGui stuff
 			{
@@ -57,19 +50,31 @@ namespace GH {
 				ImGui::NewFrame();
 				ImGui::SetNextWindowSize(ImVec2(350.0f, 900.0f));
 				ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
-				ImGui::Begin("Sidepanel", 0, ImGuiWindowFlags_NoResize);
+				ImGui::Begin("Sidepanel",0, ImGuiWindowFlags_NoResize);
 				ImGui::Text("For whatever reason you cloned and built this.\nHere is a quit button (Ctrl+W)");
-				if (ImGui::Button("Quit")) {
-					WindowClosedEvent close;
-					Dispatcher d(close);
-					d.dispatch<WindowClosedEvent>(BIND_EVENT(Application::onWindowClosed));
+				if (ImGui::Button("Quit", ImVec2(200.0f, 20.0f))) {
+					m_Running = false;
 				}
+				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 				ImGui::End();
+
+
+				glViewport(350, 0, 1250, 900);
+				glClearColor(0.188f, 0.188f, 0.188f, 1.0f);
+				glClear(GL_COLOR_BUFFER_BIT);
 				ImGui::Render();
+
 				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 			}
 
+			glBegin(GL_TRIANGLES);
+			glVertex2f(-cos(glfwGetTime()), -0.5f);
+			glVertex2f(sin(glfwGetTime()), 0.5f);
+			glVertex2f(0.5f, -cos(glfwGetTime()));
+			
+			glEnd();
 			m_Window->update();
+
 		}
 		
 		ImGui_ImplOpenGL3_Shutdown();
