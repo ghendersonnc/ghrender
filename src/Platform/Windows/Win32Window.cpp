@@ -24,6 +24,7 @@ namespace GH {
 		m_Data.height = properties.height;
 		m_Data.width = properties.width;
 		m_Data.title = properties.title;
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 		m_Window = glfwCreateWindow(properties.width, properties.height, properties.title, nullptr, nullptr);
 		glfwSetWindowPos(m_Window, 50, 50);
 		GH_ASSERT(m_Window, "Could not initialize GLFW Window context");

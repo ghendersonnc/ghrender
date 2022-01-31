@@ -12,6 +12,7 @@
 #include "../Events/MouseEvents.h"
 #include "../Events/WindowEvents.h"
 #include "Core.h"
+#include "../OpenGL/OpenGL_Shader.h"
 
 namespace GH {
 	class Application {

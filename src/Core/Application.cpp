@@ -24,9 +24,14 @@ namespace GH {
 
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::get().getWindow().getContextWindow());
 		glfwMakeContextCurrent(window);
+		
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			exit(EXIT_FAILURE);
 		}
+
+		// Debug pathing
+		GLShader s("../../../src/OpenGL/Shaders/MeshVertex.vert", "../../../src/OpenGL/Shaders/MeshFragment.frag");
+
 
 		// Temporary imgui
 		IMGUI_CHECKVERSION();
@@ -37,10 +42,13 @@ namespace GH {
 		ImGui::StyleColorsDark();
 
 		ImGuiStyle& style = ImGui::GetStyle();
+		ImVec4* color = style.Colors;
+		color[ImGuiCol_WindowBg] = ImVec4(0.18f, 0.18f, 0.18f, 1.0f);
 
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 330");
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 		while (m_Running) {
 
 			// basic ImGui stuff
@@ -51,16 +59,19 @@ namespace GH {
 				ImGui::SetNextWindowSize(ImVec2(350.0f, 900.0f));
 				ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
 				ImGui::Begin("Sidepanel",0, ImGuiWindowFlags_NoResize);
+
 				ImGui::Text("For whatever reason you cloned and built this.\nHere is a quit button (Ctrl+W)");
 				if (ImGui::Button("Quit", ImVec2(200.0f, 20.0f))) {
-					m_Running = false;
+					WindowClosedEvent close;
+					Dispatcher d(close);
+					d.dispatch<WindowClosedEvent>(BIND_EVENT(Application::onWindowClosed));
 				}
 				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 				ImGui::End();
 
 
 				glViewport(350, 0, 1250, 900);
-				glClearColor(0.188f, 0.188f, 0.188f, 1.0f);
+				glClearColor(0.288f, 0.288f, 0.288f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT);
 				ImGui::Render();
 
@@ -71,8 +82,9 @@ namespace GH {
 			glVertex2f(-cos(glfwGetTime()), -0.5f);
 			glVertex2f(sin(glfwGetTime()), 0.5f);
 			glVertex2f(0.5f, -cos(glfwGetTime()));
-			
 			glEnd();
+
+			
 			m_Window->update();
 
 		}

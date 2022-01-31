@@ -5,10 +5,8 @@ cmake_minimum_required (VERSION 3.12)
 set(PROJECT_NAME "ghrender")
 project(${PROJECT_NAME})
 
-
+set(CMAKE_CXX_STANDARD 17)
 include_directories(include)
-
-
 
 # GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -51,6 +49,7 @@ set(EXEC_SOURCES
 	"src/Core/Window.cpp"
 	"src/Error/ghassert.cpp"
 	"src/Main.cpp"
+	"src/OpenGL/OpenGL_Shader.cpp"
 	${IMGUI_SRC}
 )
 
@@ -66,6 +65,7 @@ set(EXEC_HEADERS
 	"src/Events/Event.h"
 	"src/Events/MouseEvents.h"
 	"src/Error/ghassert.hpp"
+	"src/OpenGL/OpenGL_Shader.h"
 
 )
 
