@@ -50,6 +50,8 @@ set(EXEC_SOURCES
 	"src/Error/ghassert.cpp"
 	"src/Main.cpp"
 	"src/OpenGL/OpenGL_Shader.cpp"
+	"src/OpenGL/OpenGL_VertexArray.cpp"
+	"src/OpenGL/OpenGL_VertexBuffer.cpp"
 	${IMGUI_SRC}
 )
 
@@ -66,7 +68,8 @@ set(EXEC_HEADERS
 	"src/Events/MouseEvents.h"
 	"src/Error/ghassert.hpp"
 	"src/OpenGL/OpenGL_Shader.h"
-
+	"src/OpenGL/OpenGL_VertexArray.h"
+	"src/OpenGL/OpenGL_VertexBuffer.h"
 )
 
 add_executable (${PROJECT_NAME} ${EXEC_SOURCES} ${EXEC_HEADERS})

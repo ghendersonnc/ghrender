@@ -8,7 +8,6 @@
 #include <glm/glm.hpp>
 #include "Input.h"
 
-
 namespace GH {
 	Application* Application::s_Instance = nullptr;
 	Application::Application() { GH_ASSERT(!s_Instance, "Application exists.");
@@ -25,12 +24,22 @@ namespace GH {
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::get().getWindow().getContextWindow());
 		glfwMakeContextCurrent(window);
 		
+		
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			exit(EXIT_FAILURE);
 		}
 
+		// Various OpenGL
+
 		// Debug pathing
 		GLShader s("../../../src/OpenGL/Shaders/MeshVertex.vert", "../../../src/OpenGL/Shaders/MeshFragment.frag");
+
+		//TODO: Primitives classes
+		float tmp[] = { 1.0f };
+		GLVertexBuffer VBO(GL_ARRAY_BUFFER, tmp, 1 * sizeof(float), GL_STATIC_DRAW);
+		GLVertexArray VAO;
+		VAO.linkBuffer(VBO, 0, 1, 1, 0);
+		VAO.unbind();
 
 
 		// Temporary imgui
@@ -47,7 +56,7 @@ namespace GH {
 
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 330");
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		while (m_Running) {
 
@@ -63,8 +72,8 @@ namespace GH {
 				ImGui::Text("For whatever reason you cloned and built this.\nHere is a quit button (Ctrl+W)");
 				if (ImGui::Button("Quit", ImVec2(200.0f, 20.0f))) {
 					WindowClosedEvent close;
-					Dispatcher d(close);
-					d.dispatch<WindowClosedEvent>(BIND_EVENT(Application::onWindowClosed));
+					Dispatcher dispatcher(close);
+					dispatcher.dispatch<WindowClosedEvent>(BIND_EVENT(Application::onWindowClosed));
 				}
 				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 				ImGui::End();
@@ -86,7 +95,6 @@ namespace GH {
 
 			
 			m_Window->update();
-
 		}
 		
 		ImGui_ImplOpenGL3_Shutdown();
@@ -122,8 +130,8 @@ namespace GH {
 		case Key::W:
 			if (isControl) {
 				WindowClosedEvent close;
-				Dispatcher d(close);
-				d.dispatch<WindowClosedEvent>(BIND_EVENT(Application::onWindowClosed));
+				Dispatcher dispatcher(close);
+				dispatcher.dispatch<WindowClosedEvent>(BIND_EVENT(Application::onWindowClosed));
 			}
 			break;
 		}

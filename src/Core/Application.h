@@ -13,6 +13,9 @@
 #include "../Events/WindowEvents.h"
 #include "Core.h"
 #include "../OpenGL/OpenGL_Shader.h"
+#include "../OpenGL/OpenGL_VertexArray.h"
+#include "../OpenGL/OpenGL_VertexBuffer.h"
+
 
 namespace GH {
 	class Application {
