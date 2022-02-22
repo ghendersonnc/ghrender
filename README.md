@@ -1,3 +1,5 @@
+## Hiatus due to work I am doing for a radio station for a while. However, There will be the occasional commit on the opengl3_1.0 branch.
+
 # ghrender
 
 fun home project  
